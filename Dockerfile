@@ -1,34 +1,35 @@
 # Version 1.0.0
 # cyan.img.Lamp
+
 #========== Basic Image ==========
-From centos:7
+From php:5.4-apache
 MAINTAINER "DreamInSun"
 
 #========== Environment ==========
-ENV     APACHE_DOC      /var/www/html/
-ENV     APACHE_HOME     /etc/httpd/
+ENV APACHE_DOC          /var/www/html/
 
 #========== Configuration ==========
 
+#========== Install Framework ==========
+#COPY config/php.ini /usr/local/etc/php/
+RUN apt-get update
+RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev
+RUN docker-php-ext-install iconv mcryp
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install gd
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install mysql
+RUN docker-php-ext-install xdebug
+    
 #========== Install Application ==========
-#Repo
-ADD     rpm             /rpm
-
-#Httpd
-RUN     yum localinstall -y /rpm/httpd-2.4.6-40.el7.centos.x86_64.rpm 
-RUN     systemctl enable httpd.service
-
-#PHP
-rpm -Uvh http://repo.webtatic.com/yum/el7/latest.rpm 
-RUN yum -y install php54w php54w-mysql php54w-mcrypt php54w-gd php54w-xml php54w-mbstring php54w-ldap php54w-pear php54w-xmlrpc php54w-odbc php54w-bcmath php54w-curl php54w-devel
-
-#Override Config
-COPY etc     /etc/
+#ADD weiphp  /var/www/html/weiphp
 
 #========== Expose Ports ==========
-EXPOSE 80
+#EXPOSE 80
 
 #========= RUN ==========
+#ADD shell /shell
+#RUN chmod a+x /shell/*
 
 #========= Start Service ==========
-CMD [ "systemctl", "start httpd.service" ]
+#ENTRYPOINT ["/shell/docker-entrypoint.sh"] 
+CMD [ "apache2-foreground" ]
