@@ -2,7 +2,7 @@
 # cyan.img.Lamp
 
 #========== Basic Image ==========
-From php:5.4-apache
+From php:7.1.5-apache
 MAINTAINER "DreamInSun"
 
 #========== Environment ==========
@@ -18,7 +18,11 @@ RUN docker-php-ext-install iconv mcrypt
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install gd
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install mysql
-#RUN docker-php-ext-install xdebug
+
+# PECL EXTENSION
+RUN pecl install redis-3.1.0 \
+    && pecl install xdebug-2.5.0 \
+    && docker-php-ext-enable redis xdebug
     
 #========== Install Application ==========
 
