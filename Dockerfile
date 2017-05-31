@@ -2,7 +2,7 @@
 # cyan.img.Lamp
 
 #========== Basic Image ==========
-From php:7.1.5-apache
+From php:7.1-fpm
 MAINTAINER "DreamInSun"
 
 #========== Environment ==========
@@ -20,6 +20,7 @@ RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install mysqli
 
 # PECL EXTENSION
+RUN pecl channel-update pecl.php.net
 RUN pecl install redis-3.1.0 \
     && pecl install xdebug-2.5.0 \
     && docker-php-ext-enable redis xdebug
@@ -34,4 +35,5 @@ RUN pecl install redis-3.1.0 \
 
 #========= Start Service ==========
 #ENTRYPOINT ["/shell/docker-entrypoint.sh"] 
-CMD [ "apache2-foreground" ]
+#CMD [ "apache2-foreground" ]
+CMD ["php-fpm"]
