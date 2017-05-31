@@ -2,7 +2,7 @@
 # cyan.img.Lamp
 
 #========== Basic Image ==========
-From php:7.1-fpm
+From php:7.0-fpm
 MAINTAINER "DreamInSun"
 
 #========== Environment ==========
