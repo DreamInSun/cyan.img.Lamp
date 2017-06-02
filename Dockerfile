@@ -28,14 +28,15 @@ RUN pecl install xdebug-2.5.0 \
     
 #========== Install Application ==========
 
+
 #========== Expose Ports ==========
 EXPOSE 80
 
 #========= RUN ==========
 #ADD shell /shell
 #RUN chmod a+x /shell/*
+#ENTRYPOINT ["/shell/docker-entrypoint.sh"] 
 
 #========= Start Service ==========
-#ENTRYPOINT ["/shell/docker-entrypoint.sh"] 
-CMD [ "apache2-foreground" ]
-#CMD ["php-fpm"]
+WORKDIR /var/www/html
+CMD ["apache2-foreground"]
